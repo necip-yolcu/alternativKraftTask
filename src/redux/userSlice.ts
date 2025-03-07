@@ -9,7 +9,6 @@ interface Address {
 
 interface Company {
   name: string;
-  catchPhrase: string;
   bs: string;
 }
 
@@ -34,26 +33,20 @@ const initialState: UsersState = {
   error: null,
 };
 
-// Fetch users from API
+// Fetch users from API (Initial Data)
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const response = await axios.get("https://jsonplaceholder.typicode.com/users");
   return response.data;
 });
 
-// Add user (Mock API, since JSONPlaceholder doesn’t allow posting)
-export const addUserAsync = createAsyncThunk("users/addUser", async (user: User) => {
-  return user; // Simulate adding user to API
+// Update Add User Logic to Persist Users in Redux State
+export const addUserAsync = createAsyncThunk("users/addUser", async (user: User, { getState }) => {
+  const state = getState() as { users: UsersState };
+  return [...state.users.users, user]; // Keep existing users & add the new one
 });
 
-// Update user
-export const updateUserAsync = createAsyncThunk("users/updateUser", async (user: User) => {
-  return user; // Simulate updating user
-});
-
-// Delete user
-export const deleteUserAsync = createAsyncThunk("users/deleteUser", async (id: number) => {
-  return id; // Simulate deleting user
-});
+export const updateUserAsync = createAsyncThunk("users/updateUser", async (user: User) => user);
+export const deleteUserAsync = createAsyncThunk("users/deleteUser", async (id: number) => id);
 
 const userSlice = createSlice({
   name: "users",
@@ -64,7 +57,7 @@ const userSlice = createSlice({
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
+      .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.users = action.payload;
       })
@@ -72,8 +65,8 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch users";
       })
-      .addCase(addUserAsync.fulfilled, (state, action: PayloadAction<User>) => {
-        state.users.push(action.payload);
+      .addCase(addUserAsync.fulfilled, (state, action: PayloadAction<User[]>) => {
+        state.users = action.payload;
       })
       .addCase(updateUserAsync.fulfilled, (state, action: PayloadAction<User>) => {
         const index = state.users.findIndex((user) => user.id === action.payload.id);

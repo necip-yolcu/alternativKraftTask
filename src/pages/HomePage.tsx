@@ -40,8 +40,10 @@ function HomePage() {
   };
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    if (users.length === 0) { // Only fetch if there are no users
+      dispatch(fetchUsers());
+    }
+  }, [dispatch, users.length]);
 
   useEffect(() => {
     if (error) {
@@ -67,13 +69,13 @@ function HomePage() {
     }
   };
 
-  const handleAddUser = (user: { id: number; name: string; email: string; phone: string }) => {
+  const handleAddUser = (user: { id: number; name: string; email: string; phone: string, address: { street: string; city: string; zipcode: string }, company: { name: string; bs: string }  }) => {
     dispatch(addUserAsync(user));
     setShowAddModal(false);
     handleShowToast(`✅ User "${user.name}" added successfully!`, "success"); 
   };
 
-  const handleUpdateUser = (user: { id: number; name: string; email: string; phone: string }) => {
+  const handleUpdateUser = (user: { id: number; name: string; email: string; phone: string, address: { street: string; city: string; zipcode: string }, company: { name: string; bs: string }  }) => {
     dispatch(updateUserAsync(user));
     setShowEditModal(false);
     handleShowToast(`✅ User "${user.name}" updated successfully!`, "success");
