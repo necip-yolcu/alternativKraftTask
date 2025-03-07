@@ -1,32 +1,21 @@
 import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { addUserAsync } from "../redux/userSlice";
 
 interface AddUserModalProps {
   show: boolean;
   handleClose: () => void;
+  handleAddUser: (user: { id: number; name: string; email: string; phone: string }) => void;
 }
 
-function AddUserModal({ show, handleClose }: AddUserModalProps) {
-  const dispatch = useDispatch<AppDispatch>();
+function AddUserModal({ show, handleClose, handleAddUser }: AddUserModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
   const handleSubmit = () => {
     if (!name || !email || !phone) return;
-
-    dispatch(
-      addUserAsync({
-        id: Math.floor(Math.random() * 1000), // Simulate unique ID
-        name,
-        email,
-        phone,
-      })
-    );
-
+  
+    handleAddUser({ id: Date.now(), name, email, phone }); // ✅ Call handleAddUser from props
     handleClose();
   };
 

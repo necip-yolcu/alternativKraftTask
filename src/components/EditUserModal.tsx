@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
@@ -13,19 +13,28 @@ interface EditUserModalProps {
     email: string;
     phone: string;
   } | null;
+  handleUpdate: (user: { id: number; name: string; email: string; phone: string }) => void;
 }
 
-function EditUserModal({ show, handleClose, user }: EditUserModalProps) {
+function EditUserModal({ show, handleClose, user, handleUpdate }: EditUserModalProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(user?.phone || "");
 
+  useEffect(() => {
+    setName(user?.name || "");
+    setEmail(user?.email || "");
+    setPhone(user?.phone || "");
+  }, [user]);
+
   const handleSubmit = () => {
     if (!name || !email || !phone) return;
 
-    dispatch(updateUserAsync({ id: user!.id, name, email, phone }));
+    const updatedUser = { id: user!.id, name, email, phone };
+    dispatch(updateUserAsync(updatedUser));
+    handleUpdate(updatedUser);
     handleClose();
   };
 
@@ -38,27 +47,15 @@ function EditUserModal({ show, handleClose, user }: EditUserModalProps) {
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Phone</Form.Label>
-            <Form.Control
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
+            <Form.Control type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
           </Form.Group>
         </Form>
       </Modal.Body>

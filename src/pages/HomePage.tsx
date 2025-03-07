@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, deleteUserAsync } from "../redux/userSlice";
+import { fetchUsers, deleteUserAsync, updateUserAsync, addUserAsync } from "../redux/userSlice";
 import { AppDispatch, RootState } from "../redux/store";
 import { Container, Button, Card, Row, Col } from "react-bootstrap";
 import AddUserModal from "../components/AddUserModal";
 import EditUserModal from "../components/EditUserModal";
 import DeleteUserModal from "../components/DeleteUserModal";
+import ToastNotification from "../components/ToastNotification";
 
 function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,9 +22,31 @@ function HomePage() {
     phone: string;
   } | null>(null);
 
+  const [toast, setToast] = useState({ show: false, message: "", variant: "success" });
+
+  useEffect(() => {
+    if (toast.show) {
+      const timer = setTimeout(() => {
+        setToast({ show: false, message: "", variant: "success" });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast.show]);
+
+  const handleShowToast = (message: string, variant: "success" | "danger" = "success") => {
+    console.log("Toast Message:", message); // Debugging
+    setToast({ show: true, message, variant });
+  };
+
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      handleShowToast("❌ Failed to fetch users", "danger");
+    }
+  }, [error]);
 
   const handleEdit = (user: { id: number; name: string; email: string; phone: string }) => {
     setSelectedUser(user);
@@ -39,7 +62,20 @@ function HomePage() {
     if (selectedUser) {
       dispatch(deleteUserAsync(selectedUser.id));
       setShowDeleteModal(false);
+      handleShowToast(`✅ User "${selectedUser.name}" deleted successfully!`, "success");
     }
+  };
+
+  const handleAddUser = (user: { id: number; name: string; email: string; phone: string }) => {
+    dispatch(addUserAsync(user));
+    setShowAddModal(false);
+    handleShowToast(`✅ User "${user.name}" added successfully!`, "success"); 
+  };
+
+  const handleUpdateUser = (user: { id: number; name: string; email: string; phone: string }) => {
+    dispatch(updateUserAsync(user));
+    setShowEditModal(false);
+    handleShowToast(`✅ User "${user.name}" updated successfully!`, "success");
   };
 
   return (
@@ -50,7 +86,6 @@ function HomePage() {
       </Button>
 
       {loading && <p>Loading...</p>}
-      {error && <p className="text-danger">{error}</p>}
 
       <Row>
         {users.map((user, index) => (
@@ -76,10 +111,20 @@ function HomePage() {
         ))}
       </Row>
 
-      <AddUserModal show={showAddModal} handleClose={() => setShowAddModal(false)} />
+      <AddUserModal 
+        show={showAddModal} 
+        handleClose={() => setShowAddModal(false)} 
+        handleAddUser={handleAddUser}
+      />      
+      
       {selectedUser && (
         <>
-          <EditUserModal show={showEditModal} handleClose={() => setShowEditModal(false)} user={selectedUser} />
+          <EditUserModal
+            show={showEditModal}
+            handleClose={() => setShowEditModal(false)}
+            user={selectedUser}
+            handleUpdate={handleUpdateUser}
+          />
           <DeleteUserModal
             show={showDeleteModal}
             handleClose={() => setShowDeleteModal(false)}
@@ -87,6 +132,15 @@ function HomePage() {
             userName={selectedUser.name}
           />
         </>
+      )}
+
+      {toast.show && (
+        <ToastNotification
+          show={toast.show}
+          message={toast.message}
+          variant={toast.variant as "success" | "danger"}
+          onClose={() => setToast({ show: false, message: "", variant: "success" })}
+        />
       )}
     </Container>
   );
