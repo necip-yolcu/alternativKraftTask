@@ -53,9 +53,9 @@ function HomePage() {
       {error && <p className="text-danger">{error}</p>}
 
       <Row>
-        {users.map((user) => (
+        {users.map((user, index) => (
           <Col key={user.id} xs={12} md={6} lg={4} className="mb-4">
-            <Card className="shadow-sm border-0">
+            <Card className="user-card fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
               <Card.Body>
                 <Card.Title className="text-primary">{user.name}</Card.Title>
                 <Card.Text>

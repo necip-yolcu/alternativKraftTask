@@ -1,0 +1,38 @@
+/* Fade-in animation for cards */
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* User card hover effect */
+  .user-card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Button hover effects */
+  button {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    transform: scale(1.1);
+  }
