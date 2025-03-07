@@ -1,11 +1,25 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
+interface Address {
+  street: string;
+  city: string;
+  zipcode: string;
+}
+
+interface Company {
+  name: string;
+  catchPhrase: string;
+  bs: string;
+}
+
 interface User {
   id: number;
   name: string;
   email: string;
   phone: string;
+  address: Address;
+  company: Company;
 }
 
 interface UsersState {
@@ -50,7 +64,7 @@ const userSlice = createSlice({
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
+      .addCase(fetchUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
         state.loading = false;
         state.users = action.payload;
       })

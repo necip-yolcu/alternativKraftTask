@@ -7,6 +7,7 @@ import AddUserModal from "../components/AddUserModal";
 import EditUserModal from "../components/EditUserModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import ToastNotification from "../components/ToastNotification";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -88,9 +89,10 @@ function HomePage() {
       {loading && <p>Loading...</p>}
 
       <Row>
-        {users.map((user, index) => (
-          <Col key={user.id} xs={12} md={6} lg={4} className="mb-4">
-            <Card className="user-card fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+      {users.map((user, index) => (
+        <Col key={user.id} xs={12} md={6} lg={4} className="mb-4">
+          <Link to={`/user/${user.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+            <Card className="user-card fade-in" style={{ animationDelay: `${index * 0.1}s`, cursor: "pointer" }}>
               <Card.Body>
                 <Card.Title className="text-primary">{user.name}</Card.Title>
                 <Card.Text>
@@ -98,17 +100,18 @@ function HomePage() {
                   <strong>Phone:</strong> {user.phone}
                 </Card.Text>
                 <div className="d-flex justify-content-between">
-                  <Button variant="warning" size="sm" onClick={() => handleEdit(user)}>
+                  <Button variant="warning" size="sm" onClick={(e) => { e.preventDefault(); handleEdit(user); }}>
                     Edit
                   </Button>
-                  <Button variant="danger" size="sm" onClick={() => handleDeleteConfirm(user)}>
+                  <Button variant="danger" size="sm" onClick={(e) => { e.preventDefault(); handleDeleteConfirm(user); }}>
                     Delete
                   </Button>
                 </div>
               </Card.Body>
             </Card>
-          </Col>
-        ))}
+          </Link>
+        </Col>
+      ))}
       </Row>
 
       <AddUserModal 
