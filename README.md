@@ -2,6 +2,8 @@
 
 Bu proje, kullanıcı yönetimi için geliştirilen bir React uygulamasıdır. Kullanıcıları listeleme, ekleme, güncelleme ve silme işlemlerini gerçekleştirebilirsiniz. Ayrıca kullanıcı detaylarını görüntüleyerek daha fazla bilgi alabilirsiniz.
 
+🔗 **Live Demo:** [Projeyi Buradan Görüntüleyin](https://alternativ-kraft-task-runx.vercel.app)
+
 ## 🛠 Kullanılan Teknolojiler
 
 React – Komponent bazlı frontend framework
