@@ -5,12 +5,16 @@ import { AppDispatch, RootState } from "../redux/store";
 import { Table, Container, Button } from "react-bootstrap";
 import AddUserModal from "../components/AddUserModal";
 import EditUserModal from "../components/EditUserModal";
+import DeleteUserModal from "../components/DeleteUserModal";
 
 function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
   const { users, loading, error } = useSelector((state: RootState) => state.users);
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [selectedUser, setSelectedUser] = useState<{
     id: number;
     name: string;
@@ -27,8 +31,16 @@ function HomePage() {
     setShowEditModal(true);
   };
 
-  const handleDelete = (id: number) => {
-    dispatch(deleteUserAsync(id));
+  const handleDeleteConfirm = (user: { id: number; name: string; email: string; phone: string }) => {
+    setSelectedUser(user); // ✅ FIX: Pass full user object
+    setShowDeleteModal(true);
+  };
+
+  const handleDelete = () => {
+    if (selectedUser) {
+      dispatch(deleteUserAsync(selectedUser.id));
+      setShowDeleteModal(false);
+    }
   };
 
   return (
@@ -58,7 +70,7 @@ function HomePage() {
                 <Button variant="warning" size="sm" className="me-2" onClick={() => handleEdit(user)}>
                   Edit
                 </Button>
-                <Button variant="danger" size="sm" onClick={() => handleDelete(user.id)}>
+                <Button variant="danger" size="sm" onClick={() => handleDeleteConfirm(user)}>
                   Delete
                 </Button>
               </td>
@@ -68,7 +80,15 @@ function HomePage() {
       </Table>
       <AddUserModal show={showAddModal} handleClose={() => setShowAddModal(false)} />
       {selectedUser && (
-        <EditUserModal show={showEditModal} handleClose={() => setShowEditModal(false)} user={selectedUser} />
+        <>
+          <EditUserModal show={showEditModal} handleClose={() => setShowEditModal(false)} user={selectedUser} />
+          <DeleteUserModal
+            show={showDeleteModal}
+            handleClose={() => setShowDeleteModal(false)}
+            handleDelete={handleDelete}
+            userName={selectedUser.name}
+          />
+        </>
       )}
     </Container>
   );
