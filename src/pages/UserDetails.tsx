@@ -46,7 +46,6 @@ function UserDetailPage() {
             <>
               <h4 className="mt-4">Company</h4>
               <p><strong>{user.company.name}</strong></p>
-              <p>"{user.company.catchPhrase}"</p>
               <p><strong>Industry:</strong> {user.company.bs}</p>
             </>
           )}
