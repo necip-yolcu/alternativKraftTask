@@ -3,9 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Container, Card, Button } from "react-bootstrap";
+import "../styles.css";
 
 function UserDetailPage() {
-  const { id } = useParams<{ id: string }>(); // Get user ID from URL
+  const { id } = useParams<{ id: string }>(); 
   const users = useSelector((state: RootState) => state.users.users);
   const [user, setUser] = useState<null | (typeof users)[0]>(null);
 
@@ -16,46 +17,49 @@ function UserDetailPage() {
 
   if (!user) {
     return (
-      <Container className="text-center mt-5">
-        <h2 className="text-danger">User not found!</h2>
-        <Link to="/">
-          <Button variant="primary">Go Back</Button>
-        </Link>
-      </Container>
+      <div className="user-detail-container">
+        <Container className="text-center">
+          <h2 className="text-danger">❌ User not found!</h2>
+          <Link to="/">
+            <Button className="back-button" variant="secondary">⬅ Back to Users</Button>
+          </Link>
+        </Container>
+      </div>
     );
   }
 
   return (
-    <Container className="mt-5">
-      <Card className="p-4 shadow">
-        <Card.Body>
-          <h2 className="text-primary">{user.name}</h2>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Phone:</strong> {user.phone}</p>
+    <div className="user-detail-container">
+      <Container className="d-flex justify-content-center align-items-center">
+        <Card className="user-detail-card">
+          <Card.Body>
+            <h2 className="text-primary text-center">{user.name}</h2>
 
-          {user.address && (
-            <>
-              <h4 className="mt-4">Address</h4>
-              <p>
-                {user.address.street}, {user.address.city} - {user.address.zipcode}
-              </p>
-            </>
-          )}
+            <div className="user-info">
+              <p>📧 <strong>Email:</strong> {user.email}</p>
+              <p>📞 <strong>Phone:</strong> {user.phone}</p>
 
-          {user.company && (
-            <>
-              <h4 className="mt-4">Company</h4>
-              <p><strong>{user.company.name}</strong></p>
-              <p><strong>Industry:</strong> {user.company.bs}</p>
-            </>
-          )}
+              {user.address && (
+                <p>📍 <strong>Address:</strong> {user.address.street}, {user.address.city} - {user.address.zipcode}</p>
+              )}
 
-          <Link to="/">
-            <Button variant="secondary">Back to Users</Button>
-          </Link>
-        </Card.Body>
-      </Card>
-    </Container>
+              {user.company && (
+                <>
+                  <p>🏢 <strong>Company:</strong> {user.company.name}</p>
+                  <p>📊 <strong>Business Field:</strong> {user.company.bs}</p>  {/* ✅ Included business field */}
+                </>
+              )}
+            </div>
+
+            <div className="text-center mt-4">
+              <Link to="/">
+                <Button className="back-button" variant="secondary">⬅ Back to Users</Button>
+              </Link>
+            </div>
+          </Card.Body>
+        </Card>
+      </Container>
+    </div>
   );
 }
 

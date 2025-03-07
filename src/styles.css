@@ -1,38 +1,117 @@
-/* Fade-in animation for cards */
+/* Fade-in animation */
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .fade-in {
-    animation: fadeIn 0.5s ease-out;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* User card hover effect */
-  .user-card {
-    transition: all 0.3s ease-in-out;
-    border-radius: 10px;
-    overflow: hidden;
-    border: none;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Button hover effects */
-  button {
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  button:hover {
-    transform: scale(1.1);
-  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* User card styling */
+.user-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons */
+button {
+  transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* Homepage layout */
+.homepage-container {
+  min-height: 100vh;
+  background: linear-gradient(to right, #232526, #414345);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.user-list-title {
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 2.5rem;
+}
+
+/* Animated button */
+.animated-button {
+  transition: 0.3s;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+}
+
+.animated-button:hover {
+  transform: scale(1.1);
+}
+
+/* Toast notification */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 50%;
+  transform: translateX(50%);
+  z-index: 1050;
+}
+
+/* Remove underline from links */
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* User detail page */
+.user-detail-container {
+  min-height: 100vh;
+  background: linear-gradient(to right, #232526, #414345);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.user-detail-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+}
+
+/* User info */
+.user-info p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Back button */
+.back-button {
+  font-size: 1rem;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  transform: scale(1.1);
+}
