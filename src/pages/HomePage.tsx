@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUserAsync } from "../redux/userSlice";
 import { AppDispatch, RootState } from "../redux/store";
-import { Table, Container, Button } from "react-bootstrap";
+import { Container, Button, Card, Row, Col } from "react-bootstrap";
 import AddUserModal from "../components/AddUserModal";
 import EditUserModal from "../components/EditUserModal";
 import DeleteUserModal from "../components/DeleteUserModal";
@@ -14,7 +14,6 @@ function HomePage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const [selectedUser, setSelectedUser] = useState<{
     id: number;
     name: string;
@@ -32,7 +31,7 @@ function HomePage() {
   };
 
   const handleDeleteConfirm = (user: { id: number; name: string; email: string; phone: string }) => {
-    setSelectedUser(user); // ✅ FIX: Pass full user object
+    setSelectedUser(user);
     setShowDeleteModal(true);
   };
 
@@ -49,35 +48,34 @@ function HomePage() {
       <Button className="mb-3" variant="success" onClick={() => setShowAddModal(true)}>
         Add New User
       </Button>
+
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger">{error}</p>}
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.phone}</td>
-              <td>
-                <Button variant="warning" size="sm" className="me-2" onClick={() => handleEdit(user)}>
-                  Edit
-                </Button>
-                <Button variant="danger" size="sm" onClick={() => handleDeleteConfirm(user)}>
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+
+      <Row>
+        {users.map((user) => (
+          <Col key={user.id} xs={12} md={6} lg={4} className="mb-4">
+            <Card className="shadow-sm border-0">
+              <Card.Body>
+                <Card.Title className="text-primary">{user.name}</Card.Title>
+                <Card.Text>
+                  <strong>Email:</strong> {user.email} <br />
+                  <strong>Phone:</strong> {user.phone}
+                </Card.Text>
+                <div className="d-flex justify-content-between">
+                  <Button variant="warning" size="sm" onClick={() => handleEdit(user)}>
+                    Edit
+                  </Button>
+                  <Button variant="danger" size="sm" onClick={() => handleDeleteConfirm(user)}>
+                    Delete
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
       <AddUserModal show={showAddModal} handleClose={() => setShowAddModal(false)} />
       {selectedUser && (
         <>
