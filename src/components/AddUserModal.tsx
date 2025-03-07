@@ -13,14 +13,15 @@ function AddUserModal({ show, handleClose, handleAddUser }: AddUserModalProps) {
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<{ email?: string; phone?: string }>({});
 
-  // ✅ Validate Email
-  const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // ✅ Validate Phone Number (Only numbers, 8-15 digits)
-  const isValidPhone = (phone: string) => {
-    return /^[0-9]{8,15}$/.test(phone);
+  const isValidPhone = (phone: string) => /^[0-9]{8,15}$/.test(phone);
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setErrors({});
   };
 
   const handleSubmit = () => {
@@ -40,12 +41,18 @@ function AddUserModal({ show, handleClose, handleAddUser }: AddUserModalProps) {
     }
 
     handleAddUser({ id: Date.now(), name, email, phone });
-    setErrors({});
+    resetForm();
     handleClose();
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal 
+      show={show} 
+      onHide={() => {
+        resetForm();
+        handleClose();
+      }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Add New User</Modal.Title>
       </Modal.Header>
@@ -82,8 +89,12 @@ function AddUserModal({ show, handleClose, handleAddUser }: AddUserModalProps) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="success" onClick={handleSubmit}>Add User</Button>
+        <Button variant="secondary" onClick={() => { resetForm(); handleClose(); }}>
+          Close
+        </Button>
+        <Button variant="success" onClick={handleSubmit}>
+          Add User
+        </Button>
       </Modal.Footer>
     </Modal>
   );
