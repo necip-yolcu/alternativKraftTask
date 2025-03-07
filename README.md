@@ -1,55 +1,38 @@
-# React + TypeScript + Vite
+🚀 Kullanıcı Yönetim Uygulaması
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu proje, kullanıcı yönetimi için geliştirilen bir React uygulamasıdır. Kullanıcıları listeleme, ekleme, güncelleme ve silme işlemlerini gerçekleştirebilirsiniz. Ayrıca kullanıcı detaylarını görüntüleyerek daha fazla bilgi alabilirsiniz.
 
-Currently, two official plugins are available:
+🛠 Kullanılan Teknolojiler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React – Komponent bazlı frontend framework
 
-## Expanding the ESLint configuration
+Redux Toolkit – Global state yönetimi
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+React Bootstrap – UI bileşenleri
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+React Router – Sayfa yönlendirme
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+TypeScript – Type güvenliği
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+JSONPlaceholder API – Kullanıcı verileri için sahte REST API
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-# alternativKraftTask
+📌 Proje Özellikleri
+
+✅ Kullanıcıları listeleme
+✅ Yeni kullanıcı ekleme
+✅ Kullanıcı bilgilerini düzenleme
+✅ Kullanıcı silme
+✅ Kullanıcı detay sayfası
+✅ Toast mesajları ile geri bildirim
+✅ Responsive ve kullanıcı dostu arayüz
+
+📖 Kullanım
+
+Ana sayfa: Kullanıcıları listeleyebilir, düzenleyebilir veya silebilirsiniz.
+
+"Add New User" butonu: Yeni kullanıcı eklemek için kullanılabilir.
+
+Detay Sayfası: Kullanıcı kartına tıklayarak detay bilgilerini görebilirsiniz.
+
+Modal Kullanımı: Düzenleme ve silme işlemleri modal pencerede gerçekleştirilir.
+
