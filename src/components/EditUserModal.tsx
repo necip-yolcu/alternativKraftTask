@@ -5,15 +5,24 @@ import { AppDispatch } from "../redux/store";
 import { updateUserAsync } from "../redux/userSlice";
 
 interface EditUserModalProps {
-  show: boolean;
-  handleClose: () => void;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-  } | null;
-  handleUpdate: (user: { id: number; name: string; email: string; phone: string }) => void;
+    show: boolean;
+    handleClose: () => void;
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      address: { street: string; city: string; zipcode: string };
+      company: { name: string; bs: string };
+    } | null;
+    handleUpdate: (user: {
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      address: { street: string; city: string; zipcode: string };
+      company: { name: string; bs: string };
+    }) => void;
 }
 
 function EditUserModal({ show, handleClose, user, handleUpdate }: EditUserModalProps) {
@@ -30,9 +39,17 @@ function EditUserModal({ show, handleClose, user, handleUpdate }: EditUserModalP
   }, [user]);
 
   const handleSubmit = () => {
-    if (!name || !email || !phone) return;
-
-    const updatedUser = { id: user!.id, name, email, phone };
+    if (!name || !email || !phone || !user) return;
+  
+    const updatedUser = { 
+      id: user.id, 
+      name, 
+      email, 
+      phone, 
+      address: user.address, // Ensure existing address is included
+      company: user.company  // Ensure existing company is included
+    };
+  
     dispatch(updateUserAsync(updatedUser));
     handleUpdate(updatedUser);
     handleClose();

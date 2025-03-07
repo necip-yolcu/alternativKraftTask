@@ -22,6 +22,8 @@ function HomePage() {
     name: string;
     email: string;
     phone: string;
+    address: { street: string; city: string; zipcode: string };
+    company: { name: string; bs: string };
   } | null>(null);
 
   const [toast, setToast] = useState({ show: false, message: "", variant: "success" });
@@ -51,16 +53,6 @@ function HomePage() {
       handleShowToast("❌ Failed to fetch users", "danger");
     }
   }, [error]);
-
-  const handleEdit = (user: { id: number; name: string; email: string; phone: string }) => {
-    setSelectedUser(user);
-    setShowEditModal(true);
-  };
-
-  const handleDeleteConfirm = (user: { id: number; name: string; email: string; phone: string }) => {
-    setSelectedUser(user);
-    setShowDeleteModal(true);
-  };
 
   const handleDelete = () => {
     if (selectedUser) {
